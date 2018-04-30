@@ -38,7 +38,7 @@ describe Leafy::Logger do
     end
 
     it 'can use default configuration with syslog' do
-      
+
       factory.appenders subject
 
       logger.debug( 'debug' )
@@ -46,7 +46,7 @@ describe Leafy::Logger do
 
       factory.stop
 
-      if File.exists?( '/var/log/syslog' )
+      if File.readable?( '/var/log/syslog' )
         last = File.read( '/var/log/syslog' ).split( /\n/ ).last
         expect(last).to match /info$/
       end
@@ -67,7 +67,7 @@ describe Leafy::Logger do
 
       factory.stop
 
-      if File.exists?( '/var/log/syslog' ) and File.exist?( '/var/log/auth.log' )
+      if File.readable?( '/var/log/syslog' ) and File.exist?( '/var/log/auth.log' )
         last = File.read( '/var/log/auth.log' ).split( /\n/ ).last
         expect(last).to match /info$/
       end
@@ -81,7 +81,7 @@ describe Leafy::Logger do
     end
 
     let( :log ) { File.join( File.dirname( __FILE__ ), 'test.log' ) }
-  
+
     before { FileUtils.rm_f log }
     after { FileUtils.rm_f log }
 
